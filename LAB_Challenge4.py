@@ -1,5 +1,5 @@
 import streamlit as st
-from azure.identity import InteractiveBrowserCredential
+from azure.identity import DeviceCodeCredential
 from azure.ai.projects import AIProjectClient
 
 FOUNDRY_PROJECT_ENDPOINT = "https://foundry-tecnun-resource.services.ai.azure.com/api/projects/foundry-tecnun-project"
@@ -10,9 +10,12 @@ st.title("🎬 Movie Critic Agent - Foundry")
 
 @st.cache_resource
 def get_agent_client():
+    
+    credential = DeviceCodeCredential()
+    
     project = AIProjectClient(
         endpoint=FOUNDRY_PROJECT_ENDPOINT,
-        credential=InteractiveBrowserCredential(),
+        credential=credential,
     )
     return project.get_openai_client(agent_name=FOUNDRY_AGENT_NAME)
 
